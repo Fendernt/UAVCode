@@ -14,12 +14,13 @@ void TOFSensor::initAddres(int adress) {
     digitalWrite(shutPin, HIGH);  // Alleen deze sensor aan
     delay(150);
     if (!sensor->init()) {
-      Serial.println("Sensor rechts init mislukt");
+      Serial.print("Sensor init mislukt op addr: ");
+      Serial.println(adress);
       return;
     }
     sensor->setAddress(adress);
     delay(50);
-    Serial.print("Sensor rechts actief op: ");
+    Serial.print("Sensor actief op: ");
     Serial.println(adress);
 
     adressInitialised = 1;
@@ -31,7 +32,7 @@ void TOFSensor::setOffset(float offset){
 
 float TOFSensor::getDistance() {
     if(!adressInitialised) {
-        Serial.println("Plaese set adress.");
+        Serial.println("Please set adress.");
         return;
     }
     int distance = sensor->readRangeSingleMillimeters() + this->offset;

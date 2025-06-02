@@ -11,7 +11,7 @@
 
 class GyroSensor {
     public:
-      GyroSensor(int adress){
+      GyroSensor(int adress = 0x68){ //Default adress is 0x68.
         //In de constructor het I2C adress meegeven, en de setup functie aanroepen.
         this->mpu = new MPU6050(adress);
       }

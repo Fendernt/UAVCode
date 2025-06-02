@@ -7,12 +7,20 @@
 
 class TOFSensor {
     public:
+      //Tofsensor initialiser
       TOFSensor(int shutPin, float offset = 0);
+
+      //Functie om de afstand te lezen.
       float getDistance();
+
+      //Functie om het adress aan te passen.
       void initAddres(int adress);
+
+      //Functie om de offset aan te passen.
       void setOffset(float offset);
 
     private:
+      //Private functie om de waarde te filteren.
       float filterDistance(int distance);
 
       VL53L0X* sensor;
