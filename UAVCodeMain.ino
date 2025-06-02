@@ -5,6 +5,8 @@
 #include "src/motors/SideMotorDriver.h"
 #include "Wire.h" 
 
+
+//States voor de UAV voor code control.
 #define state_startup 0
 #define state_afmeren 1
 #define state_vooruit 2
@@ -17,6 +19,7 @@ const int thrusterPin = 3;  // Pin D3
 const int pinD4 = 4;  // Pin D4
 
 // Pins voor gemeenschappelijke anodes ("lapjes")
+//Idk wat dit doet, gecopieerd van Rens.
 const int anodePins[2] = {
   34, // Digit 1 (tientallen)
   35  // Digit 2 (eenheden)
@@ -31,7 +34,7 @@ volatile bool systemStopped = false;
 volatile int UAVState = 0;
 
 
-
+//Seven segment display.
 SevenDigitDisplay sevenDigitDisplay(
   37, // A 
   39, // B 
@@ -44,12 +47,15 @@ SevenDigitDisplay sevenDigitDisplay(
 );
 
 
+//Tofsensor objects.
 TOFSensor tofLinks(48);
 TOFSensor tofRechts(47);
 TOFSensor tofVoor(49);
 
+//Gyro object.
 GyroSensor gyro(0x68);
 
+//Motor control objects.
 StuwMotorDriver stuwMotorDriver(13,12,5,6);
 SideMotorDriver sideMotorDriver(8,9,7);
 
@@ -78,9 +84,7 @@ int state = 0;
 
 void loop() {
   //Always dislay amperage.
-  //displayAmperage();
-
-  return;
+  displayAmperage();
 
 
   if(systemStopped) {
@@ -89,21 +93,58 @@ void loop() {
   }
 
 
-
+  /*
+    Hierin komt de code voor de states
+    Vermoedelijk in een functie of ander bestand anders word het wel heel vol en onleesbaar.
+  */
   switch(UAVState){
     case state_startup:
 
       break;
+    case state_afmeren:
+
+      break;
+
+    case state_vooruit:
+
+      break;
+
+    case state_draaien:
+
+      break;
+
+    case state_arucomarker:
+
+      break;
   }
-
-
 
 }
 
+
+/*
+  De nut van deze functie is dat je gecontrolleerd variabelen 1x kan aanpassen tijdens het veranderen van een state, en alles gecontrolleerd op 1 plek gebeurd.
+  Als je wilt dat er wat extra gebeurd als je van state veranderd kan je dat hier toevoegen.
+*/
 void switchState(int state){
   switch(state){
     case state_startup:
         //idk what to do here yet.
+      break;
+
+    case state_afmeren:
+
+      break;
+
+    case state_vooruit:
+
+      break;
+
+    case state_draaien:
+
+      break;
+
+    case state_arucomarker:
+
       break;
   }
 
@@ -115,6 +156,9 @@ void switchState(int state){
 
 
 
+/*
+  Init relay pinnen.
+*/
 void initRelays(){
   //Relay pinnen instellen.
   pinMode(thrusterPin, OUTPUT);
@@ -125,6 +169,11 @@ void initRelays(){
   digitalWrite(pinD4, LOW);
 }
 
+/*
+  Init TOF sensors.
+  Ik heb de offsets gestolen van Julia's code.
+  Idk of ze nog kloppen.
+*/
 void initTOFSensors(){
   tofRechts.initAddres(0x30);
   tofRechts.setOffset(-10.5);
@@ -136,6 +185,9 @@ void initTOFSensors(){
   tofVoor.setOffset(-4);
 }
 
+/*
+  Initializers voor de ampere control modules.
+*/
 void initAmperageControl(){
 // Anodepinnen instellen
   for (int i = 0; i < 2; i++) {
@@ -143,7 +195,9 @@ void initAmperageControl(){
     digitalWrite(anodePins[i], HIGH); // Anode uit (common anode)
   }
 
-  //analogReference(INTERNAL1V1);
+  //Dit moest van school idk why
+  //Idk of het werkt of iets doet.
+  analogReference(INTERNAL1V1);
 
   // Stel interruptPin in met interne pull-up
   pinMode(interruptPin, INPUT_PULLUP);
@@ -157,8 +211,9 @@ void onderspanningISR() {
   digitalWrite(pinD4, LOW);   // relais 2 UIT
   Serial.println("Interrupt aangeroepen: systeem uitgeschakeld, relais uit");
 }
+ 
 
-
+//Functie om de amperage op de seven segment display te krijgen.
 void displayAmperage(){
   static int currentDigit = 0; // wisselt tussen 0 en 1
   

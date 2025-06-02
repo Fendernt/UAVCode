@@ -6,7 +6,11 @@
 class SideMotorDriver {
     public:
         SideMotorDriver(int pinIn1, int pinIn2, int pwmPin);
+
+        //Snelheid, negatief is de andere kant op.
         void drive(int pwm);
+
+        //Afremmen \ stoppen.
         void brake();
 
     private:
