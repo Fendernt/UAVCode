@@ -2,14 +2,18 @@
 #include "src/sensors/TOFSensor.h"
 #include "src/other/SevenDigitDisplay.h"
 #include "src/motors/StuwMotorDriver.h"
+#include "src/motors/SideMotorDriver.h"
 #include "Wire.h" 
 
 #define state_startup 0
-
+#define state_afmeren 1
+#define state_vooruit 2
+#define state_draaien 3
+#define state_arucomarker 4
 
 
 // Relay Pinnen
-const int pinD3 = 3;  // Pin D3
+const int thrusterPin = 3;  // Pin D3
 const int pinD4 = 4;  // Pin D4
 
 // Pins voor gemeenschappelijke anodes ("lapjes")
@@ -20,7 +24,7 @@ const int anodePins[2] = {
 const uint8_t interruptPin = 2;  // moet naar GND schakelen voor trigger
 unsigned long previousDisplayMillis;
 const unsigned long displayInterval = 200; // 5 ms per digit
-int currentDigit = 0; // wisselt tussen 0 en 1
+
 
 // --- Statusvariabele ---
 volatile bool systemStopped = false;
@@ -29,39 +33,55 @@ volatile int UAVState = 0;
 
 
 SevenDigitDisplay sevenDigitDisplay(
-    32, // A
-    30, // B
-    33, // C
-    37, // D
-    39, // E
-    36, // F
-    38, // G
-    31  // DP
-  );
+  37, // A 
+  39, // B 
+  36, // C 
+  32, // D 
+  30, // E 
+  33, // F 
+  31, // G 
+  38  // H 
+);
 
 
-  TOFSensor tofLinks(48);
-  TOFSensor tofRechts(47);
-  TOFSensor tofVoor(49);
+TOFSensor tofLinks(48);
+TOFSensor tofRechts(47);
+TOFSensor tofVoor(49);
+
+GyroSensor gyro(0x68);
+
+StuwMotorDriver stuwMotorDriver(13,12,5,6);
+SideMotorDriver sideMotorDriver(8,9,7);
 
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
   Wire.begin();
-
-  initAmperageControl();
-  initTOFSensors();
+  Serial.begin(115200);
 
   initRelays();
+  digitalWrite(pinD4, HIGH);
+  //digitalWrite(thrusterPin, HIGH);
+
+
+  initAmperageControl();
+
+
+  initTOFSensors();
+  gyro.init(5);
+
 
   switchState(state_startup);
-
 }
+
+int state = 0;
 
 void loop() {
   //Always dislay amperage.
-  displayAmperage();
+  //displayAmperage();
+
+  return;
+
 
   if(systemStopped) {
     //systemStopped is voor als de batterij onderspanning heeft.
@@ -97,11 +117,11 @@ void switchState(int state){
 
 void initRelays(){
   //Relay pinnen instellen.
-  pinMode(pinD3, OUTPUT);
+  pinMode(thrusterPin, OUTPUT);
   pinMode(pinD4, OUTPUT);
 
   //Zet pinnen D3 en D4 meteen uit
-  digitalWrite(pinD3, LOW);
+  digitalWrite(thrusterPin, LOW);
   digitalWrite(pinD4, LOW);
 }
 
@@ -123,6 +143,7 @@ void initAmperageControl(){
     digitalWrite(anodePins[i], HIGH); // Anode uit (common anode)
   }
 
+  //analogReference(INTERNAL1V1);
 
   // Stel interruptPin in met interne pull-up
   pinMode(interruptPin, INPUT_PULLUP);
@@ -132,17 +153,28 @@ void initAmperageControl(){
 // --- ISR: wordt aangeroepen bij FALLING op interruptPin ---
 void onderspanningISR() { 
   systemStopped = true;
-  digitalWrite(pinD3, LOW);   // relais 1 UIT
+  digitalWrite(thrusterPin, LOW);   // relais 1 UIT
   digitalWrite(pinD4, LOW);   // relais 2 UIT
   Serial.println("Interrupt aangeroepen: systeem uitgeschakeld, relais uit");
 }
 
 
 void displayAmperage(){
+  static int currentDigit = 0; // wisselt tussen 0 en 1
+  
   int raw = analogRead(A0);
   float voltage = (raw / 1023.0) * 5.0;
   float current = (voltage - 2.5) / 0.1;  // Ampère
   int displayValue = constrain(round(abs(current * 10)), 0, 99); // *10 om 1 decimaal te tonen
+
+  Serial.print("Raw: ");
+  Serial.print(raw);
+  Serial.print(" Voltage: ");
+  Serial.print(voltage);
+  Serial.print(" Current: ");
+  Serial.print(current);
+  Serial.print(" Display val:");
+  Serial.println(displayValue);
 
   unsigned long currentMillis = millis();
 
@@ -155,9 +187,6 @@ void displayAmperage(){
       digitalWrite(anodePins[i], HIGH); // uit
     }
 
-    if(currentDigit == 2) sevenDigitDisplay.setEnabled(0);
-    else sevenDigitDisplay.setEnabled(1);
-
     int digitToShow = (currentDigit == 0) ? (displayValue / 10) : (displayValue % 10);
 
     //Draw digit 
@@ -167,6 +196,6 @@ void displayAmperage(){
     digitalWrite(anodePins[currentDigit], LOW);
 
     // Wissel naar volgende digit
-    currentDigit = (currentDigit + 1) % 3;
+    currentDigit = (currentDigit + 1) % 2;
   }
 }

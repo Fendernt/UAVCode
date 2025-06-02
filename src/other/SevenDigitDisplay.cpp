@@ -1,6 +1,6 @@
 #include "SevenDigitDisplay.h"
 
-SevenDigitDisplay::SevenDigitDisplay(int a, int b, int c, int d, int e, int f, int g, int vcc) {
+SevenDigitDisplay::SevenDigitDisplay(int a, int b, int c, int d, int e, int f, int g, int h) {
     this->pinNumbers[0] = a;
     this->pinNumbers[1] = b;
     this->pinNumbers[2] = c;
@@ -8,7 +8,7 @@ SevenDigitDisplay::SevenDigitDisplay(int a, int b, int c, int d, int e, int f, i
     this->pinNumbers[4] = e;
     this->pinNumbers[5] = f;
     this->pinNumbers[6] = g;
-    this->pinNumbers[7] = vcc;
+    this->pinNumbers[7] = h;
 
     initPinStates();
     drawDigit(0);
