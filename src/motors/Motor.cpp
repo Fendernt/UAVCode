@@ -1,4 +1,3 @@
-#include <arduino.h>
 #include "Motor.h"
 
 float Motor::pwmnaarstuwkracht(int pwm, bool richting){

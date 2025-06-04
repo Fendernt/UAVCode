@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-Class Motor{
+class Motor{
 /****************************************************************************************************************************************************************************
 De class Motor wordt geinitialiseerd door de abc waardes uit de trendlijn van de pwm / stuwkracht meting in te vullen,
 a,b,c_voor of a1,b1,c1 refereerd naar de abc coeficienten voor de kracht vooruit

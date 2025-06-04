@@ -8,10 +8,11 @@
 
 //States voor de UAV voor code control.
 #define state_startup 0
-#define state_afmeren 1
-#define state_vooruit 2
-#define state_draaien 3
-#define state_arucomarker 4
+#define state_idle 1
+#define state_afmeren 2
+#define state_vooruit 3
+#define state_draaien 4
+#define state_arucomarker 5
 
 
 // Relay Pinnen
@@ -63,7 +64,8 @@ SideMotorDriver sideMotorDriver(8,9,7);
 void setup() {
   // put your setup code here, to run once:
   Wire.begin();
-  Serial.begin(115200);
+  Serial.begin(115200); //Serial Monitor
+  Serial1.begin(115200); //Pi Communication
 
   initRelays();
   digitalWrite(pinD4, HIGH);
@@ -77,12 +79,17 @@ void setup() {
   gyro.init(5);
 
 
-  switchState(state_startup);
+  switchState(state_idle);
+
+  resetWebsiteVariables();
 }
 
 int state = 0;
 
 void loop() {
+  //Listen for Pi Webserver input
+  checkPiServerInput();
+
   //Always dislay amperage.
   displayAmperage();
 
@@ -130,7 +137,9 @@ void switchState(int state){
     case state_startup:
         //idk what to do here yet.
       break;
+    case state_idle:
 
+      break;
     case state_afmeren:
 
       break;
@@ -222,14 +231,14 @@ void displayAmperage(){
   float current = (voltage - 2.5) / 0.1;  // Ampère
   int displayValue = constrain(round(abs(current * 10)), 0, 99); // *10 om 1 decimaal te tonen
 
-  Serial.print("Raw: ");
-  Serial.print(raw);
-  Serial.print(" Voltage: ");
-  Serial.print(voltage);
-  Serial.print(" Current: ");
-  Serial.print(current);
-  Serial.print(" Display val:");
-  Serial.println(displayValue);
+  // Serial.print("Raw: ");
+  // Serial.print(raw);
+  // Serial.print(" Voltage: ");
+  // Serial.print(voltage);
+  // Serial.print(" Current: ");
+  // Serial.print(current);
+  // Serial.print(" Display val:");
+  // Serial.println(displayValue);
 
   unsigned long currentMillis = millis();
 
@@ -254,3 +263,47 @@ void displayAmperage(){
     currentDigit = (currentDigit + 1) % 2;
   }
 }
+
+
+
+void checkPiServerInput(){
+  if (Serial1.available()) {
+    String msg = Serial1.readStringUntil('\n');
+    Serial.print("Pi Message received: ");
+
+    if (msg == "1") {
+      switchState(state_idle);
+      Serial.println("Setstate: Idle");
+    }
+    else if (msg == "2") {
+      switchState(state_afmeren);
+      Serial.println("Setstate: Afmeren");
+    }
+    else if (msg == "3") {
+      switchState(state_vooruit);
+      Serial.println("Setstate: Vooruit");
+    }
+    else if (msg == "4") {
+      switchState(state_draaien);
+      Serial.println("Setstate: Draaien");
+    }
+    else if (msg == "5") {
+      switchState(state_arucomarker);
+      Serial.println("Setstate: Arucomarker");
+    }
+    else if (msg == "-1") {
+      Serial.println("Toggle Thrusters.");
+      digitalWrite(thrusterPin, !digitalRead(thrusterPin));
+    }
+  }
+}
+
+void resetWebsiteVariables(){
+  Serial1.println("RESET");
+  delay(10);
+  Serial1.println("RESET");
+  delay(10);
+  
+  Serial.println("Raspberry reset message send.");
+}
+

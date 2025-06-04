@@ -37,6 +37,8 @@ void StuwMotorDriver::setMotor(int motor, int speed, int dir) {
     }
 }
 
+
+
 void StuwMotorDriver::setMotorSpeedRechts(int pwm) {
     if(pwm < 0){
         setMotor(1, abs(pwm), false);
