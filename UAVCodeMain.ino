@@ -62,9 +62,9 @@ SevenDigitDisplay sevenDigitDisplay(
 
 
 //Tofsensor objects.
-TOFSensor tofLvoor(27);
-TOFSensor tofLachter(28);
-TOFSensor tofVoor(26);
+TOFSensor tofLvoor(47);
+TOFSensor tofLachter(48);
+TOFSensor tofVoor(49);
 
 //Gyro object.
 GyroSensor gyro(0x68);
