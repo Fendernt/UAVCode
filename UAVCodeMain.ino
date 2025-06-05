@@ -14,6 +14,17 @@
 #define state_draaien 4
 #define state_arucomarker 5
 
+/*
+    TODO:
+
+    Maak een class die de motors aanstuurd dmv newton input. 
+    (dus gebruik van de translator class)
+
+    Shared newton system, meerdere regelaars hun newton bij elkaar optellen
+    (voorbeeld naar voren rijden & bijsturen.)
+
+ */
+
 
 // Relay Pinnen
 const int thrusterPin = 3;  // Pin D3
@@ -265,7 +276,9 @@ void displayAmperage(){
 }
 
 
-
+/*
+  Check of de website een command heeft gestuurd en switch de state accordingly.
+*/
 void checkPiServerInput(){
   if (Serial1.available()) {
     String msg = Serial1.readStringUntil('\n');
