@@ -1,5 +1,7 @@
 #include "test_stuwmotoren.h"
 
-test_stuwmotoren(){
-    serial.println("Test stuwmotoren!");
+#include <Arduino.h>
+
+void test_stuwmotoren(){
+    Serial.println("Test stuwmotoren!");
 }

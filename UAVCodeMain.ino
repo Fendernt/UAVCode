@@ -99,6 +99,7 @@ void setup() {
 int state = 0;
 
 void loop() {
+
   //Listen for Pi Webserver input
   checkPiServerInput();
 
@@ -135,8 +136,6 @@ void loop() {
     case state_arucomarker:
 
       break;
-
-    case state_test_stuwmotoren;
   }
 
 }
