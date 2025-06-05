@@ -13,6 +13,7 @@
 #define state_vooruit 3
 #define state_draaien 4
 #define state_arucomarker 5
+#define state_test_stuwmotoren 6
 
 
 // Relay Pinnen
@@ -123,6 +124,8 @@ void loop() {
     case state_arucomarker:
 
       break;
+
+    case state_test_stuwmotoren;
   }
 
 }
