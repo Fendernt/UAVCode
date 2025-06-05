@@ -3,6 +3,8 @@
 #include "src/other/SevenDigitDisplay.h"
 #include "src/motors/StuwMotorDriver.h"
 #include "src/motors/SideMotorDriver.h"
+#include "src/states/test_tofsensoren.h"
+
 #include "Wire.h" 
 
 
@@ -15,6 +17,7 @@
 #define state_draaien 4
 #define state_arucomarker 5
 #define state_test_stuwmotoren 6
+#define state_test_tofsensoren 7
 
 /*
     TODO:
@@ -137,6 +140,9 @@ void loop() {
     case state_arucomarker:
 
       break;
+    case state_test_tofsensoren:
+        test_tofsensoren(tofLachter, tofLvoor, tofVoor);
+      break;
   }
 
 }
@@ -169,6 +175,9 @@ void switchState(int state){
     case state_arucomarker:
 
       break;
+    case state_test_tofsensoren:
+      break;
+
   }
 
 
@@ -199,13 +208,13 @@ void initRelays(){
 */
 void initTOFSensors(){
   tofLachter.initAddres(0x30);
-  tofLachter.setOffset(-10.5);
+  tofLachter.setOffset(0);
 
   tofLvoor.initAddres(0x31);
-  tofLvoor.setOffset(-19.5);
+  tofLvoor.setOffset(0);
 
   tofVoor.initAddres(0x32);
-  tofVoor.setOffset(-4);
+  tofVoor.setOffset(0);
 }
 
 /*
