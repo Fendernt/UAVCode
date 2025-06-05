@@ -47,7 +47,7 @@ void GyroSensor::updateYawRefined() {
     } else if (deltaYaw < -180) {
         deltaYaw += 360;
     }
-
+//test
     // Tel bij op bij yawRefined
     yawRefined += deltaYaw;
 
