@@ -141,7 +141,7 @@ void loop() {
 
       break;
     case state_afmeren:
-      run_state_afmeren(sideblower);
+      run_state_afmeren(sideblower,sidepwmtranslator,sideBlowerDriver);
 
       break;
 

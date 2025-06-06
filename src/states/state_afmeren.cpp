@@ -42,7 +42,7 @@ float berekenKracht(float afstandGemiddeld) {
 }
 
 // === State-afhandelingsfunctie ===
-void run_state_afmeren(Blower& sideblower) {
+void run_state_afmeren(Blower& sideblower, PWMTranslator& translator,SideBlowerDriver& sideblowerdriver) {
   // Lees TOF-afstanden in mm en converteer naar cm
   float afstandVoor = tofLvoor.getDistance();     // mm
   float afstandAchter = tofLachter.getDistance(); // mm
@@ -69,7 +69,12 @@ void run_state_afmeren(Blower& sideblower) {
   Serial.print(vorigeAfstand, 2);
   Serial.print(" cm, Kracht: ");
   Serial.print(kracht, 3);
-  Serial.println(" N");
+  Serial.print(" N");
+  Serial.print(" komt overeenmet: ");
+  Serial.print(sideblowerdriver.drive(kracht));
+  Serial.print(" ");
+  Serial.print(translator.stuwkrachtnaarpwm(kracht));
+  Serial.println(" PWM");
 }
 
 
