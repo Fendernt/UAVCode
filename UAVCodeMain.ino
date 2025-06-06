@@ -1,9 +1,13 @@
 #include "src/sensors/GyroSensor.h"
 #include "src/sensors/TOFSensor.h"
 #include "src/other/SevenDigitDisplay.h"
-#include "src/motors/StuwMotorDriver.h"
-#include "src/motors/SideMotorDriver.h"
 #include "src/states/test_tofsensoren.h"
+#include "src/blowers/Blower.h"
+#include "src/blowers/BlowerDriver.h"
+#include "src/blowers/PWMTranslator.h"
+#include "src/blowers/StuwBlowerDriver.h"
+#include "src/blowers/SideBlowerDriver.h"
+#include "src/states/test_sidemotor.h"
 
 #include "Wire.h" 
 
@@ -18,6 +22,7 @@
 #define state_arucomarker 5
 #define state_test_stuwmotoren 6
 #define state_test_tofsensoren 7
+#define state_test_sidemotor 8
 
 /*
     TODO:
@@ -73,8 +78,17 @@ TOFSensor tofVoor(49);
 GyroSensor gyro(0x68);
 
 //Motor control objects.
-StuwMotorDriver stuwMotorDriver(13,12,5,6);
-SideMotorDriver sideMotorDriver(8,9,7);
+StuwBlowerDriver linkerBlowerDriver(13,12); //(int PWMA_1, int PWMA_2)
+StuwBlowerDriver rechterBlowerDriver(5,6); //(int PWMA_1, int PWMA_2)
+SideBlowerDriver sideBlowerDriver(8,9,7,20,230,-20,-230); //(int pinIn1, int pinIn2, int pwmPin,int pwmmin_vooruit,int pwmmax_vooruit,int pwmmin_achteruit,int pwmmax_achteruit)
+
+PWMTranslator linkerpwmtranslator(-0.00035,0.18,0.51,-0.000229,0.12,0.26); //(vooruit van hovercraft abc, achteruit tov hovercraft abc)
+PWMTranslator rechterpwmtranslator(-0.000339,0.17,0.48,-0.000229,0.12,0.26);//(vooruit van hovercraft abc, achteruit tov hovercraft abc)
+PWMTranslator sidepwmtranslator(-0.000282,0.03,-0.3,0.000139,0.03,-0.6); //(vooruit tov propellor abc, achteruit tov propellor abc)
+
+Blower linkerblower(&linkerBlowerDriver,&linkerpwmtranslator);
+Blower rechterblower(&rechterBlowerDriver, &rechterpwmtranslator);
+Blower sideblower(&sideBlowerDriver, &sidepwmtranslator);
 
 
 void setup() {
@@ -143,6 +157,9 @@ void loop() {
     case state_test_tofsensoren:
         test_tofsensoren(tofLachter, tofLvoor, tofVoor);
       break;
+    case state_test_sidemotor:
+      test_sidemotor(sideBlowerDriver);
+      break;
   }
 
 }
@@ -177,6 +194,10 @@ void switchState(int state){
       break;
     case state_test_tofsensoren:
       break;
+
+    case state_test_sidemotor:
+    break;
+
 
   }
 
