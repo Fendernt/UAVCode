@@ -1,5 +1,5 @@
 #include "state_afmeren.h"
-#include <Arduino.h>
+
 
 // PID-instellingen afgeleid van jouw Python-code
 const float setpoint = 20.0;  // gewenste afstand in cm
@@ -42,7 +42,7 @@ float berekenKracht(float afstandGemiddeld) {
 }
 
 // === State-afhandelingsfunctie ===
-void run_state_afmeren() {
+void run_state_afmeren(Blower& sideblower) {
   // Lees TOF-afstanden in mm en converteer naar cm
   float afstandVoor = tofLvoor.getDistance();     // mm
   float afstandAchter = tofLachter.getDistance(); // mm
@@ -50,14 +50,15 @@ void run_state_afmeren() {
   // Check op ongeldige waarden (0 betekent meestal fout)
   if (afstandVoor == 0 || afstandAchter == 0) {
     Serial.println("[Afmeren] TOF-fout: afstand = 0 mm");
-    //stuurKrachtNaarMotor(0);  // veiligheid: geen kracht
+    sideblower.leverkracht(0);
     return;
   }
 
   float afstandGemiddeld = (afstandVoor + afstandAchter) / 2.0 / 10.0; // cm
 
   float kracht = berekenKracht(afstandGemiddeld);
-
+  
+  sideblower.leverkracht(kracht);
 
  
 

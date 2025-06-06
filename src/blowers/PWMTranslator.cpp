@@ -68,7 +68,7 @@ int richting = 0;
 
   }
 
-pwm = abs(b/(2*a) + sqrt(stuwkracht/a - c/a + pow(b,2)/(4*pow(a,2)))) * richting;
+pwm = abs(b/(2*a) + sqrt(stuwkracht/a - c/a + pow(b,2)/(4*pow(a,2)))) * richting *0.00981;
 
 
 
