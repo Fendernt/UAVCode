@@ -8,6 +8,7 @@
 #include "src/blowers/StuwBlowerDriver.h"
 #include "src/blowers/SideBlowerDriver.h"
 #include "src/states/test_sidemotor.h"
+#include "src/states/state_afmeren.h"
 
 #include "Wire.h" 
 
@@ -109,7 +110,7 @@ void setup() {
   gyro.init(5);
 
 
-  switchState(state_idle);
+  switchState(state_afmeren);
 
   resetWebsiteVariables();
 }
@@ -140,6 +141,7 @@ void loop() {
 
       break;
     case state_afmeren:
+      run_state_afmeren();
 
       break;
 
