@@ -1,17 +1,21 @@
+//algemeen
 #include "src/sensors/GyroSensor.h"
 #include "src/sensors/TOFSensor.h"
 #include "src/other/SevenDigitDisplay.h"
-#include "src/states/test_tofsensoren.h"
+#include "Wire.h" 
+//motor drivers:
 #include "src/blowers/Blower.h"
 #include "src/blowers/BlowerDriver.h"
 #include "src/blowers/PWMTranslator.h"
 #include "src/blowers/StuwBlowerDriver.h"
 #include "src/blowers/SideBlowerDriver.h"
+#include "src/blowers/StuwPWMTranslator.h"
+#include "src/blowers/SidePWMTranslator.h"
+
+// states:
 #include "src/states/test_sidemotor.h"
 #include "src/states/state_afmeren.h"
-
-#include "Wire.h" 
-
+#include "src/states/test_tofsensoren.h"
 
 
 //States voor de UAV voor code control.
@@ -83,13 +87,13 @@ StuwBlowerDriver linkerBlowerDriver(13,12); //(int PWMA_1, int PWMA_2)
 StuwBlowerDriver rechterBlowerDriver(5,6); //(int PWMA_1, int PWMA_2)
 SideBlowerDriver sideBlowerDriver(8,9,7,20,230,-20,-230); //(int pinIn1, int pinIn2, int pwmPin,int pwmmin_vooruit,int pwmmax_vooruit,int pwmmin_achteruit,int pwmmax_achteruit)
 
-PWMTranslator linkerpwmtranslator(-0.00035,0.18,0.51,-0.000229,0.12,0.26); //(vooruit van hovercraft abc, achteruit tov hovercraft abc)
-PWMTranslator rechterpwmtranslator(-0.000339,0.17,0.48,-0.000229,0.12,0.26);//(vooruit van hovercraft abc, achteruit tov hovercraft abc)
-PWMTranslator sidepwmtranslator(-0.000282,0.03,-0.3,0.000139,0.03,-0.6); //(vooruit tov propellor abc, achteruit tov propellor abc)
+StuwPWMTranslator linkerpwmtranslator(-0.00035,0.18,0.51,-0.000229,0.12,0.26); //(vooruit van hovercraft abc, achteruit tov hovercraft abc)
+StuwPWMTranslator rechterpwmtranslator(-0.000339,0.17,0.48,-0.000229,0.12,0.26);//(vooruit van hovercraft abc, achteruit tov hovercraft abc)
+SidePWMTranslator sideblowerpwmtranslator(0.000282,0.03,-0.3,0.000136,0.03,-0.61); //(vooruit tov propellor abc, achteruit tov propellor abc)
 
 Blower linkerblower(&linkerBlowerDriver,&linkerpwmtranslator);
 Blower rechterblower(&rechterBlowerDriver, &rechterpwmtranslator);
-Blower sideblower(&sideBlowerDriver, &sidepwmtranslator);
+Blower sideblower(&sideBlowerDriver, &sideblowerpwmtranslator);
 
 
 void setup() {
@@ -98,9 +102,9 @@ void setup() {
   Serial.begin(115200); //Serial Monitor
   Serial1.begin(115200); //Pi Communication
 
-  initRelays();
+  //initRelays();
   digitalWrite(pinD4, HIGH);
-  //digitalWrite(thrusterPin, HIGH);
+  digitalWrite(thrusterPin, HIGH);
 
 
   initAmperageControl();
@@ -110,7 +114,7 @@ void setup() {
   gyro.init(5);
 
 
-  switchState(state_afmeren);
+  switchState(state_afmeren); //
 
   resetWebsiteVariables();
 }
@@ -141,7 +145,7 @@ void loop() {
 
       break;
     case state_afmeren:
-      run_state_afmeren(sideblower,sidepwmtranslator,sideBlowerDriver);
+      run_state_afmeren(sideblower,sideblowerpwmtranslator,sideBlowerDriver);
 
       break;
 
@@ -160,7 +164,7 @@ void loop() {
         test_tofsensoren(tofLachter, tofLvoor, tofVoor);
       break;
     case state_test_sidemotor:
-      test_sidemotor(sideBlowerDriver);
+      test_sidemotor(sideblower,sideblowerpwmtranslator,sideBlowerDriver);
       break;
   }
 

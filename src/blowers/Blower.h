@@ -2,6 +2,8 @@
 #define BLOWER_H
 
 #include "PWMTranslator.h"
+#include "SidePWMTranslator.h"
+#include "StuwPWMTranslator.h"
 #include "SideBlowerDriver.h"
 #include "StuwBlowerDriver.h"
 #include "BlowerDriver.h"

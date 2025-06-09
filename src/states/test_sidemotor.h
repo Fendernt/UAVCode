@@ -8,7 +8,7 @@
 
 #include <Arduino.h>
 
-void test_sidemotor(SideBlowerDriver& blower);
+void test_sidemotor(Blower& sideblower, SidePWMTranslator& translator,SideBlowerDriver& sideblowerdriver);
 
 
 

@@ -1,9 +1,8 @@
 #include "test_sidemotor.h"
 
-void test_sidemotor(SideBlowerDriver& blower){
+void test_sidemotor(Blower& sideblower, SidePWMTranslator& translator,SideBlowerDriver& sideblowerdriver) {
 
     Serial.println("Test sidemotor!");
-
 
 /*
 vooruit:
@@ -16,8 +15,15 @@ drive (-255) -> -230 pwm
 
 */
 
-Serial.print("10 pwm gestuurd naar de sidemotor");
-Serial.print(blower.drive(10));
-Serial.println(" pwm geleverd");
+translator.printdebug();
 
+for(int i = -250;i<=250;i=i+10){
+    Serial.print("imput pwm:");
+    Serial.print(i);
+    Serial.print(" , ");
+    Serial.print(translator.pwmnaarstuwkracht(i),4);
+    Serial.print(" komt overeen met: ");
+    Serial.print(translator.stuwkrachtnaarpwm(translator.pwmnaarstuwkracht(i)));
+    Serial.println(" pwm");
+    }
 }

@@ -1,5 +1,6 @@
 #include "state_afmeren.h"
-
+// VERPLICHTE OMREKENFACTOR OF MIJN MOTOREN ONTPLOFFEN
+float stuwkracht = 0;
 
 // PID-instellingen afgeleid van jouw Python-code
 const float setpoint = 20.0;  // gewenste afstand in cm
@@ -58,23 +59,26 @@ void run_state_afmeren(Blower& sideblower, PWMTranslator& translator,SideBlowerD
 
   float kracht = berekenKracht(afstandGemiddeld);
   
-  sideblower.leverkracht(kracht);
+  stuwkracht = kracht / 0.00981;
+  sideblower.leverkracht(stuwkracht);
 
  
 
   // Debug info
   Serial.print("[Afmeren] Afstand: ");
   Serial.print(afstandGemiddeld, 2);
-  Serial.print(" cm, Filtered: ");
+  Serial.print("cm, Filtered: ");
   Serial.print(vorigeAfstand, 2);
-  Serial.print(" cm, Kracht: ");
+  Serial.print("cm, Kracht: ");
   Serial.print(kracht, 3);
-  Serial.print(" N");
-  Serial.print(" komt overeenmet: ");
-  Serial.print(sideblowerdriver.drive(kracht));
-  Serial.print(" ");
-  Serial.print(translator.stuwkrachtnaarpwm(kracht));
-  Serial.println(" PWM");
+  Serial.print("N");
+  Serial.print(" komt overeen met: ");
+  Serial.print(stuwkracht,3);
+  Serial.print("gr En dat is: ");
+  Serial.print(translator.stuwkrachtnaarpwm(stuwkracht));
+  Serial.print("PWM Actueel: ");
+  Serial.print(sideblowerdriver.drive(translator.stuwkrachtnaarpwm(stuwkracht)));
+  Serial.println("PWM");
 }
 
 

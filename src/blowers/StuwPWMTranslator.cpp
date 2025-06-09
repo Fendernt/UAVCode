@@ -1,7 +1,7 @@
-#include "PWMTranslator.h"
+#include "StuwPWMTranslator.h"
 
 
-PWMTranslator::PWMTranslator(float a_voor, float b_voor, float c_voor, float a_achter, float b_achter, float c_achter){
+StuwPWMTranslator::StuwPWMTranslator(float a_voor, float b_voor, float c_voor, float a_achter, float b_achter, float c_achter){
   a1 = a_voor;
   b1 = b_voor;
   c1 = c_voor;
@@ -14,7 +14,7 @@ PWMTranslator::PWMTranslator(float a_voor, float b_voor, float c_voor, float a_a
   maxkracht_achteruit = stuwkrachtnaarpwm(-255);
 
 }
-float PWMTranslator::pwmnaarsuwkracht(int pwm){
+float StuwPWMTranslator::pwmnaarstuwkracht(int pwm){
 float a,b,c;
 float stuwkracht;
 
@@ -40,7 +40,7 @@ stuwkracht = a*pow(pwm,2)+b*pwm+c;
 return stuwkracht;  
 
 }
-int PWMTranslator::stuwkrachtnaarpwm(float stuwkracht){
+int StuwPWMTranslator::stuwkrachtnaarpwm(float stuwkracht){
 float a,b,c;
 int pwm =0;
 int richting = 0;
