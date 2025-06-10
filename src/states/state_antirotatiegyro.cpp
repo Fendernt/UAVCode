@@ -1,67 +1,70 @@
-#include "antirotatiegyro.h"
-#include <Arduino.h>
+#include "state_antirotatie.h"
 
-AntiRotatieGyro::AntiRotatieGyro() {
-    kp = 0.1f;
-    ki = 0.05f;
-    kd = 0.01f;
+// PID-waarden voor yaw-stabilisatie
+const float Kp = 0.1f;
+const float Ki = 0.05f;
+const float Kd = 0.01f;
 
-    dt = 0.01f;
+// Systeeminstellingen
+const float gewensteYaw = 0.0f;
+const float armLength = 0.05f;   // in meter
+const float gravity = 9.81f;     // m/s^2
 
-    maxForceForward = 0.3f;
-    maxForceBackward = -0.4f;
+const float maxForceForward = 0.3f;    // N
+const float maxForceBackward = -0.4f;  // N
 
-    armLength = 0.05f;
-    gravity = 9.81f;
+// PID-status
+float yaw_integral = 0.0f;
+float yaw_last_error = 0.0f;
+unsigned long yaw_last_time = 0;
 
-    integral = 0.0f;
-    prevError = 0.0f;
+// Bereken corrigerende kracht (in Newton) op basis van yaw-rate
+float berekenCorrectiekracht(float yawRate) {
+    float error = gewensteYaw - yawRate;
+
+    unsigned long now = millis();
+    float dt = (now - yaw_last_time) / 1000.0f;
+    if (dt <= 0.0f) dt = 0.001f;
+    yaw_last_time = now;
+
+    yaw_integral += error * dt;
+    float derivative = (error - yaw_last_error) / dt;
+    yaw_last_error = error;
+
+    float torque = Kp * error + Ki * yaw_integral + Kd * derivative;
+
+    // Kracht omzetten via moment = kracht * armLength * 2 → kracht = torque / (2 * armLength)
+    float kracht = torque / (2.0f * armLength);
+
+    // Beperken tot motorlimieten
+    kracht = constrain(kracht, maxForceBackward, maxForceForward);
+    return kracht;
 }
 
-void AntiRotatieGyro::begin() {
-    Serial.begin(9600);
-    // gyro.begin(); // indien nodig
-}
+// Aansturing van beide achterventilatoren voor rotatiecontrole
+void run_state_antirotatie() {
+    float yawRate = getYawRate(); // moet extern gedefinieerd zijn
+    float kracht = berekenCorrectiekracht(yawRate);
 
-void AntiRotatieGyro::update() {
-    delay((int)(dt * 1000));
+    float krachtLinks  = constrain(+kracht, maxForceBackward, maxForceForward);
+    float krachtRechts = constrain(-kracht, maxForceBackward, maxForceForward);
 
-    float currentYawRate = readYawRate();
-    float desiredYawRate = 0.0f;
+    float krachtLinksGram  = krachtLinks / gravity;
+    float krachtRechtsGram = krachtRechts / gravity;
 
-    float error = desiredYawRate - currentYawRate;
-    integral += error * dt;
-    float derivative = (error - prevError) / dt;
-    prevError = error;
+    setRearLeftFan(krachtLinksGram);
+    setRearRightFan(krachtRechtsGram);
 
-    float torque = kp * error + ki * integral + kd * derivative;
-
-    float force = torque / (2.0f * armLength);
-
-    float forceLeft = constrain(+force, maxForceBackward, maxForceForward);
-    float forceRight = constrain(-force, maxForceBackward, maxForceForward);
-
-    float forceLeftGrams  = forceLeft / gravity;
-    float forceRightGrams = forceRight / gravity;
-
-    setRearLeftFan(forceLeftGrams);
-    setRearRightFan(forceRightGrams);
-
-    Serial.print("YawRate [rad/s]: "); Serial.print(currentYawRate);
-    Serial.print("\tF_left [N]: "); Serial.print(forceLeft);
-    Serial.print("\tF_right [N]: "); Serial.print(forceRight);
-    Serial.print("\tF_left [g]: "); Serial.print(forceLeftGrams);
-    Serial.print("\tF_right [g]: "); Serial.println(forceRightGrams);
-}
-
-float AntiRotatieGyro::readYawRate() {
-    return gyro.getYaw();
-}
-
-void AntiRotatieGyro::setRearLeftFan(float forceInGrams) {
-    ::setRearLeftFan(forceInGrams);
-}
-
-void AntiRotatieGyro::setRearRightFan(float forceInGrams) {
-    ::setRearRightFan(forceInGrams);
+    // Debug
+    Serial.print("[Antirotatie] YawRate: ");
+    Serial.print(yawRate);
+    Serial.print(" rad/s | Kracht L: ");
+    Serial.print(krachtLinks, 3);
+    Serial.print(" N (");
+    Serial.print(krachtLinksGram, 2);
+    Serial.print(" g), R: ");
+    Serial.print(krachtRechts, 3);
+    Serial.print(" N (");
+    Serial.print(krachtRechtsGram, 2);
+    Serial.println(" g)");
 }

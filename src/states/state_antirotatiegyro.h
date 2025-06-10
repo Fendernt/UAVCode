@@ -1,27 +1,19 @@
-#ifndef ANTIROTATIEGYRO_H
-#define ANTIROTATIEGYRO_H
+#ifndef STATE_ANTIROTATIE_H
+#define STATE_ANTIROTATIE_H
 
-class AntiRotatieGyro {
-public:
-    AntiRotatieGyro();
-    void begin();
-    void update();
+#include <Arduino.h>
+#include "../blowers/Blower.h"
+#include "../blowers/PWMTranslator.h"
 
-private:
-    float kp, ki, kd;
-    float dt;
+// Externe afhankelijkheden (zoals gyro en motorfuncties)
+extern float getYawRate(); // moet elders gedefinieerd worden
+extern void setRearLeftFan(float forceInGrams);
+extern void setRearRightFan(float forceInGrams);
 
-    float maxForceForward, maxForceBackward;
+// Hoofd PID-functie die de krachten berekent op basis van yaw-rate
+float berekenCorrectiekracht(float yawRate);
 
-    float armLength;
-    float gravity;
-
-    float integral;
-    float prevError;
-
-    void setRearLeftFan(float forceInGrams);
-    void setRearRightFan(float forceInGrams);
-    float readYawRate();
-};
+// Uitvoerfunctie voor antidraaien
+void run_state_antirotatie(Blower& sideblower, PWMTranslator& translator, SideBlowerDriver& sideblowerdriver);
 
 #endif

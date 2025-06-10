@@ -26,13 +26,13 @@ float berekenKracht(float afstandGemiddeld) {
   float dt = (now - last_time) / 1000.0;
   if (dt <= 0.0) dt = 0.001;
   last_time = now;
-
   integral += error * dt;
 
   float derivative = (error - last_error) / dt;
   derivative = constrain(derivative, -50.0, 50.0);  // jitter beperken
 
   last_error = error;
+
 
   float kracht = Kp * error + Ki * integral + Kd * derivative;
 
