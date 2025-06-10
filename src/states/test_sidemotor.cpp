@@ -18,12 +18,7 @@ drive (-255) -> -230 pwm
 translator.printdebug();
 
 for(int i = -250;i<=250;i=i+10){
-    Serial.print("imput pwm:");
-    Serial.print(i);
-    Serial.print(" , ");
-    Serial.print(translator.pwmnaarstuwkracht(i),4);
-    Serial.print(" komt overeen met: ");
-    Serial.print(translator.stuwkrachtnaarpwm(translator.pwmnaarstuwkracht(i)));
-    Serial.println(" pwm");
-    }
+    translator.pwmnaarstuwkracht_test(i);
+    translator.stuwkrachtnaarpwm_test(translator.pwmnaarstuwkracht(i));
+}
 }

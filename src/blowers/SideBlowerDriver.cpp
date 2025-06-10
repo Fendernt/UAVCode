@@ -15,6 +15,18 @@ SideBlowerDriver::SideBlowerDriver(int pinIn1, int pinIn2, int pwmPin,int pwmmin
     this->motor = new Motor(pin1, pin2, pwmPin, offset, 0);
 
 }
+
+/*
+vooruit:
+drive(10) -> 20 pwm
+drive (255) -> 230 pwm
+
+drive (-10) -> -20 pwm
+drive (-255) -> -230 pwm
+
+
+*/
+
 int SideBlowerDriver::drive(int pwm){
     if(pwm>0){ //vooruit
         if(pwm<minpwm_v) pwm = minpwm_v;
@@ -24,7 +36,6 @@ int SideBlowerDriver::drive(int pwm){
         if(pwm>minpwm_a) pwm = minpwm_a;
         if(pwm<maxpwm_a) pwm = maxpwm_a;
     }
-
     this->motor->drive(pwm);
     return pwm;
 }

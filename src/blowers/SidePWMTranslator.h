@@ -10,6 +10,8 @@ class SidePWMTranslator : public PWMTranslator{
     virtual float pwmnaarstuwkracht(int pwm);
     virtual int stuwkrachtnaarpwm(float stuwkracht);
     void printdebug(void);
+    void pwmnaarstuwkracht_test(int pwm);
+    void stuwkrachtnaarpwm_test(float stuwkracht);
     
     private:
     float a1,b1,c1;

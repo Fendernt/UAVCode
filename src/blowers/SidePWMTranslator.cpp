@@ -62,8 +62,6 @@ int richting = 0;
 
   if (stuwkracht == 0) return 0; //snelle check, bespaart rekenwerk 
 
-  stuwkracht = stuwkracht / 0.00981;
-
     if (stuwkracht>0){ //vooruit
       a = a1;
       b = b1;
@@ -113,4 +111,18 @@ void SidePWMTranslator::printdebug(void){
   Serial.print(" , ");
   Serial.print(maxkracht_achteruit,4);
   Serial.println(" ");
+}
+void SidePWMTranslator::pwmnaarstuwkracht_test(int pwm){
+    Serial.print("imput pwm:");
+    Serial.print(pwm);
+    Serial.print(" , ");
+    Serial.println(this->pwmnaarstuwkracht(pwm),4);
+}
+
+void SidePWMTranslator::stuwkrachtnaarpwm_test(float stuwkracht){
+  Serial.print("imput stuwkracht: ");
+  Serial.print(stuwkracht,4);
+  Serial.print(" , ");
+  Serial.println(this->stuwkrachtnaarpwm(stuwkracht));
+
 }
