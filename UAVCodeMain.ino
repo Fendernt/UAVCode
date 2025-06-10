@@ -102,7 +102,7 @@ void setup() {
   Serial.begin(115200); //Serial Monitor
   Serial1.begin(115200); //Pi Communication
 
-  //initRelays();
+  initRelays(); 
   digitalWrite(pinD4, HIGH);
   digitalWrite(thrusterPin, HIGH);
 
@@ -114,7 +114,7 @@ void setup() {
   gyro.init(5);
 
 
-  switchState(state_afmeren); //
+  switchState(state_test_sidemotor); //
 
   resetWebsiteVariables();
 }
