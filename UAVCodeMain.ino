@@ -114,7 +114,7 @@ void setup() {
   gyro.init(5);
 
 
-  switchState(state_test_sidemotor); //
+  switchState(state_afmeren); //
 
   resetWebsiteVariables();
 }
