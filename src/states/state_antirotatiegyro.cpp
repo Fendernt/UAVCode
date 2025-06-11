@@ -52,8 +52,8 @@ void run_state_antirotatie() {
     float krachtLinksGram  = krachtLinks / gravity;
     float krachtRechtsGram = krachtRechts / gravity;
 
-    setRearLeftFan(krachtLinksGram);
-    setRearRightFan(krachtRechtsGram);
+    //setRearLeftFan(krachtLinksGram);
+    //setRearRightFan(krachtRechtsGram);
 
     // Debug
     Serial.print("[Antirotatie] YawRate: ");

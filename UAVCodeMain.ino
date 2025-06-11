@@ -16,6 +16,7 @@
 #include "src/states/test_sidemotor.h"
 #include "src/states/state_afmeren.h"
 #include "src/states/test_tofsensoren.h"
+#include "src/states/state_muurstopper.h"
 
 
 //States voor de UAV voor code control.
@@ -28,6 +29,7 @@
 #define state_test_stuwmotoren 6
 #define state_test_tofsensoren 7
 #define state_test_sidemotor 8
+#define state_muurstopper 9
 
 /*
     TODO:
@@ -104,7 +106,7 @@ void setup() {
 
   initRelays(); 
   digitalWrite(pinD4, HIGH);
-  digitalWrite(thrusterPin, HIGH);
+  //digitalWrite(thrusterPin, HIGH);
 
 
   initAmperageControl();
@@ -114,7 +116,7 @@ void setup() {
   gyro.init(5);
 
 
-  switchState(state_afmeren); //
+  switchState(state_muurstopper); //
 
   resetWebsiteVariables();
 }
@@ -128,6 +130,7 @@ void loop() {
 
   //Always dislay amperage.
   displayAmperage();
+
 
 
   if(systemStopped) {
@@ -151,6 +154,10 @@ void loop() {
 
     case state_vooruit:
 
+      break;
+
+    case state_muurstopper:
+        run_state_muur_stopper(linkerblower,rechterblower);
       break;
 
     case state_draaien:

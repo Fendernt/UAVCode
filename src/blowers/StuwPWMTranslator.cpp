@@ -45,7 +45,10 @@ float a,b,c;
 int pwm =0;
 int richting = 0;
 
-  if (stuwkracht <= 0) return pwm; //snelle check, bespaart rekenwerk 
+Serial.print("Stuwkracht gegeven: ");
+Serial.print(stuwkracht);
+
+  //if (stuwkracht <= 0) return pwm; //snelle check, bespaart rekenwerk 
 
     if (stuwkracht>0){
     a = a1;
@@ -68,9 +71,12 @@ int richting = 0;
 
   }
 
+
+stuwkracht = abs(stuwkracht);
 pwm = abs(b/(2*a) + sqrt(stuwkracht/a - c/a + pow(b,2)/(4*pow(a,2)))) * richting *0.00981;
 
-
+Serial.print(" Berekend pwm: ");
+Serial.println(pwm);
 
 return pwm;
 }        
