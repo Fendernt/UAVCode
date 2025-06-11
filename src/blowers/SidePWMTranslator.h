@@ -1,7 +1,7 @@
 #ifndef SIDEPWMTRANSLATOR_H
 #define SIDEPWMTRANSLATOR_H
 #include "PWMTranslator.h"
-#include <Math.h>
+//#include <Math.h>
 #include <Arduino.h>
 
 class SidePWMTranslator : public PWMTranslator{

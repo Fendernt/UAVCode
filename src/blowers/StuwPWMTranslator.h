@@ -1,7 +1,7 @@
 #ifndef STUWPWMTRANSLATOR_H
 #define STUWPWMTRANSLATOR_H
 #include"PWMTranslator.h"
-#include <Math.h>
+//#include <Math.h>
 #include <Arduino.h>
 
 class StuwPWMTranslator: public PWMTranslator{

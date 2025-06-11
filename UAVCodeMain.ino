@@ -2,6 +2,8 @@
 #include "src/sensors/GyroSensor.h"
 #include "src/sensors/TOFSensor.h"
 #include "src/other/SevenDigitDisplay.h"
+#include "src/other/SDCardWriter.h"
+#include "src/other/Globals.h"
 #include "Wire.h" 
 //motor drivers:
 #include "src/blowers/Blower.h"
@@ -102,19 +104,28 @@ void setup() {
   Serial.begin(115200); //Serial Monitor
   Serial1.begin(115200); //Pi Communication
 
+  Serial.println("Starting..");
+
   initRelays(); 
   digitalWrite(pinD4, HIGH);
   digitalWrite(thrusterPin, HIGH);
 
 
+  _SDCardWriter.init();
+
+
+  Serial.println("Starting amp control.");
   initAmperageControl();
 
-
+  Serial.println("Initializing TOF sensors.");
   initTOFSensors();
+
+  Serial.println("Initializing Gyro.");
   gyro.init(5);
 
 
-  switchState(state_afmeren); //
+
+  switchState(state_afmeren); 
 
   resetWebsiteVariables();
 }
@@ -128,6 +139,8 @@ void loop() {
 
   //Always dislay amperage.
   displayAmperage();
+
+
 
 
   if(systemStopped) {
@@ -269,6 +282,7 @@ void onderspanningISR() {
   digitalWrite(thrusterPin, LOW);   // relais 1 UIT
   digitalWrite(pinD4, LOW);   // relais 2 UIT
   Serial.println("Interrupt aangeroepen: systeem uitgeschakeld, relais uit");
+  _SDCardWriter.finishWriting();
 }
  
 
@@ -311,6 +325,8 @@ void displayAmperage(){
 
     // Wissel naar volgende digit
     currentDigit = (currentDigit + 1) % 2;
+
+    //_SDCardWriter.log(voltage,current,digitToShow, 10);
   }
 }
 
