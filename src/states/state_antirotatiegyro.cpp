@@ -52,8 +52,8 @@ void run_state_antirotatie(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
     float krachtLinksGram  = krachtLinks / gravity;
     float krachtRechtsGram = krachtRechts / gravity;
 
- stuwMotorLinks.leverkracht(krachtLinksGram);
- stuwMotorRechts.leverkracht(krachtRechtsGram);
+    //setRearLeftFan(krachtLinksGram);
+    //setRearRightFan(krachtRechtsGram);
 
     // Debug
     Serial.print("[Antirotatie] YawRate: ");

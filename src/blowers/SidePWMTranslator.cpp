@@ -113,14 +113,14 @@ void SidePWMTranslator::printdebug(void){
   Serial.println(" ");
 }
 void SidePWMTranslator::pwmnaarstuwkracht_test(int pwm){
-    Serial.print("imput pwm:");
+    Serial.print("input pwm:");
     Serial.print(pwm);
     Serial.print(" , ");
-    Serial.println(this->pwmnaarstuwkracht(pwm),4);
+    Serial.print(this->pwmnaarstuwkracht(pwm),4);
 }
 
 void SidePWMTranslator::stuwkrachtnaarpwm_test(float stuwkracht){
-  Serial.print("imput stuwkracht: ");
+  Serial.print("input stuwkracht: ");
   Serial.print(stuwkracht,4);
   Serial.print(" , ");
   Serial.println(this->stuwkrachtnaarpwm(stuwkracht));
