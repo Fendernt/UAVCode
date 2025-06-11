@@ -1,9 +1,5 @@
 #include "state_muurstopper.h"
 
-
-
-
-
 // === PID-regeling ===
 float berekenAfstandKracht(float afstand) {
     // PID-instellingen
@@ -35,7 +31,7 @@ float berekenAfstandKracht(float afstand) {
   last_error = error;
 
   float kracht = Kp * error + Ki * integral + Kd * derivative;
-  kracht = constrain(kracht, -0.147, 0.215);
+  kracht = constrain(kracht, -0.215, 0.147);
 
   return kracht;
 }

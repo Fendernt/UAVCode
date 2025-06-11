@@ -106,7 +106,7 @@ void setup() {
 
   initRelays(); 
   digitalWrite(pinD4, HIGH);
-  //digitalWrite(thrusterPin, HIGH);
+  digitalWrite(thrusterPin, HIGH);
 
 
   initAmperageControl();
@@ -172,6 +172,9 @@ void loop() {
       break;
     case state_test_sidemotor:
       test_sidemotor(sideblower,sideblowerpwmtranslator,sideBlowerDriver);
+      break;
+    case state_test_stuwmotoren:
+      
       break;
   }
 
