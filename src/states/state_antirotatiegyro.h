@@ -13,6 +13,6 @@ extern float getYawRate(); // moet elders gedefinieerd worden
 float berekenCorrectiekracht(float yawRate);
 
 // Uitvoerfunctie voor antidraaien
-void run_state_antirotatie(Blower& sideblower, PWMTranslator& translator, SideBlowerDriver& sideblowerdriver);
+void run_state_antirotatie(Blower& stuwMotorLinks, Blower& stuwMotorRechts);
 
 #endif

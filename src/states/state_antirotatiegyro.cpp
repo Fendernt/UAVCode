@@ -42,7 +42,7 @@ float berekenCorrectiekracht(float yawRate) {
 }
 
 // Aansturing van beide achterventilatoren voor rotatiecontrole
-void run_state_antirotatie() {
+void run_state_antirotatie(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
     float yawRate = getYawRate(); // moet extern gedefinieerd zijn
     float kracht = berekenCorrectiekracht(yawRate);
 

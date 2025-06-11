@@ -4,6 +4,7 @@
 #include "../sensors/TOFSensor.h"
 #include "../blowers/Blower.h"
 #include "../blowers/PWMTranslator.h"
+#include "../other/Globals.h"
 #include <Arduino.h>
 
 // Externe TOF-sensoren
