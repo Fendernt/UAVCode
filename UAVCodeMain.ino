@@ -198,7 +198,9 @@ void switchState(int state){
         //idk what to do here yet.
       break;
     case state_idle:
-
+        linkerblower.leverkracht(0);
+        rechterblower.leverkracht(0);
+        sideblower.leverkracht(0);
       break;
     case state_afmeren:
 
