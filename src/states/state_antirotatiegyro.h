@@ -11,9 +11,9 @@ extern float getYawRate(); // moet elders gedefinieerd worden
 
 
 // Hoofd PID-functie die de krachten berekent op basis van yaw-rate
-float berekenCorrectiekracht(float yawRate);
+float berekenCorrectiekrachtGyro(float yawRate);
 
 // Uitvoerfunctie voor antidraaien
-void run_state_antirotatie(Blower& stuwMotorLinks, Blower& stuwMotorRechts);
+void run_state_antirotatieGyro(Blower& stuwMotorLinks, Blower& stuwMotorRechts);
 
 #endif

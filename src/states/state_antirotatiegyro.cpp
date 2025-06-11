@@ -14,12 +14,12 @@ const float maxForceForward = 0.3f;    // N
 const float maxForceBackward = -0.4f;  // N
 
 // PID-status
-float yaw_integral = 0.0f;
-float yaw_last_error = 0.0f;
-unsigned long yaw_last_time = 0;
+static float yaw_integral = 0.0f;
+static float yaw_last_error = 0.0f;
+static unsigned long yaw_last_time = 0;
 
 // Bereken corrigerende kracht (in Newton) op basis van yaw-rate
-float berekenCorrectiekracht(float yawRate) {
+float berekenCorrectiekrachtGyro(float yawRate) {
     float error = gewensteYaw - yawRate;
 
     unsigned long now = millis();
@@ -42,9 +42,9 @@ float berekenCorrectiekracht(float yawRate) {
 }
 
 // Aansturing van beide achterventilatoren voor rotatiecontrole
-void run_state_antirotatie(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
+void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
     float yawRate = getYawRate(); // moet extern gedefinieerd zijn
-    float kracht = berekenCorrectiekracht(yawRate);
+    float kracht = berekenCorrectiekrachtGyro(yawRate);
 
     float krachtLinks  = constrain(+kracht, maxForceBackward, maxForceForward);
     float krachtRechts = constrain(-kracht, maxForceBackward, maxForceForward);

@@ -15,9 +15,9 @@ const float maxForceForward = 0.3f;    // N
 const float maxForceBackward = -0.4f;  // N
 
 // PID-status
-float yaw_integral = 0.0f;
-float yaw_last_error = 0.0f;
-unsigned long yaw_last_time = 0;
+static float yaw_integral = 0.0f;
+static float yaw_last_error = 0.0f;
+static unsigned long yaw_last_time = 0;
 
 // Bepaal yaw-hoek (in radialen) uit verschil ToF-afstanden
 float berekenYawHoek() {
@@ -34,7 +34,7 @@ float berekenYawHoek() {
 }
 
 // Bereken corrigerende kracht (in Newton) op basis van yaw-hoek
-float berekenCorrectiekracht(float yaw) {
+float berekenCorrectiekrachtTOF(float yaw) {
     float error = gewensteYaw - yaw;
 
     unsigned long now = millis();
@@ -57,9 +57,9 @@ float berekenCorrectiekracht(float yaw) {
 }
 
 // Aansturing van beide zijwaartse motoren
-void run_state_antirotatie(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
+void run_state_antirotatieTOF(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
     float yaw = berekenYawHoek();
-    float kracht = berekenCorrectiekracht(yaw);
+    float kracht = berekenCorrectiekrachtTOF(yaw);
 
     float krachtLinks  = constrain(+kracht, maxForceBackward, maxForceForward);
     float krachtRechts = constrain(-kracht, maxForceBackward, maxForceForward);
