@@ -21,7 +21,7 @@ class GyroSensor {
       void update();
 
       //Get gyro waardes van de gyro.
-      float getYaw() {return this->yawRefined;} //Yaw = rotatie
+      float getYaw() {return this->yawRefined - yawOffset;} //Yaw = rotatie
       float getYawRaw() {return this->yaw;}
       float getPitch() {return this->pitch;} //Pitch = x-as tilt
       float getRoll() {return this->roll;} //Roll is y-as tilt
@@ -30,6 +30,8 @@ class GyroSensor {
       int getAccelX() {return -aaReal.x; }
       int getAccelY() {return -aaReal.y; }
       int getAccelZ() {return aaReal.z; } 
+
+      void setYawOffset();
 
     private:
       void readMpuData(); //Lees de waardes uit.
@@ -43,6 +45,8 @@ class GyroSensor {
       float pitch;
       float roll;
       float yprOffset[3];
+
+      float yawOffset = 0;
 
 
       //Gyro leest uit tussen 0->360, en switched tussen die 2 als je er overheen gaat. (dus 461 word 1, en -2 word 358)

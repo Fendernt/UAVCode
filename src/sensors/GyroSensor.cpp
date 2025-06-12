@@ -12,6 +12,10 @@ void GyroSensor::init(int calAmount){
     updateYawRefined();
   }
 
+void GyroSensor::setYawOffset(){
+  yawOffset += yawRefined;
+}
+
   void GyroSensor::setupMPU(int calAmount){
     Serial.println(F("Initializing I2C devices..."));
     mpu->initialize();
