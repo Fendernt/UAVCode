@@ -71,7 +71,7 @@ int richting = 0;
     stuwkracht = stuwkracht * -1.0; //stuwkracht moet positief zijn voor de functie om te werken, richting wordt later toegevoegd
   }
 
-pwm = (b/(2*a) + sqrt(stuwkracht/a - c/a + pow(b,2)/(4*pow(a,2))));
+pwm = -(b/(2*a) + sqrt(stuwkracht/a - c/a + pow(b,2)/(4*pow(a,2))));
 pwm = pwm * richting;
 return pwm;
 }

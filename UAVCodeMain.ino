@@ -19,6 +19,7 @@
 #include "src/states/state_afmeren.h"
 #include "src/states/test_tofsensoren.h"
 #include "src/states/state_muurstopper.h"
+#include "src/states/test_stuwmotoren.h"
 
 
 //States voor de UAV voor code control.
@@ -108,7 +109,7 @@ void setup() {
 
   Serial.println("Starting..");
 
-  initRelays(); 
+  initRelays();
   digitalWrite(pinD4, HIGH);
   digitalWrite(thrusterPin, HIGH);
 
@@ -123,7 +124,7 @@ void setup() {
   initTOFSensors();
 
   Serial.println("Initializing Gyro.");
-  gyro.init(5);
+  gyro.init(5); 
 
 
   switchState(state_muurstopper); //
@@ -184,6 +185,7 @@ void loop() {
       test_sidemotor(sideblower,sideblowerpwmtranslator,sideBlowerDriver);
       break;
     case state_test_stuwmotoren:
+    test_stuwmotoren(rechterblower,rechterpwmtranslator,rechterBlowerDriver,linkerblower,linkerpwmtranslator,linkerBlowerDriver);
       
       break;
   }
