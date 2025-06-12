@@ -42,8 +42,8 @@ float berekenCorrectiekrachtGyro(float yawRate) {
 }
 
 // Aansturing van beide achterventilatoren voor rotatiecontrole
-void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
-    float yawRate = getYawRate(); // moet extern gedefinieerd zijn
+void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts, GyroSensor& gyro) {
+    float yawRate = gyro.getYaw(); // moet extern gedefinieerd zijn
     float kracht = berekenCorrectiekrachtGyro(yawRate);
 
     float krachtLinks  = constrain(+kracht, maxForceBackward, maxForceForward);

@@ -6,7 +6,7 @@ float stuwkracht = 0;
 const float setpoint = 20.0;  // gewenste afstand in cm
 const float Kp = 0.147;
 const float Ki = 0.0;
-const float Kd = 0.8;  // verlaagd voor minder schokken
+const float Kd = 0.6;  // verlaagd voor minder schokken
 
 // Interne PID-status
 float integral = 0.0;

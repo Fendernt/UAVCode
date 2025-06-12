@@ -7,7 +7,7 @@
 
 
 //Comment dit uit om data in de serial monitor te krijgen.
-#define GYRODEBUG
+//#define GYRODEBUG
 
 class GyroSensor {
     public:

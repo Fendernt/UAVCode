@@ -20,6 +20,7 @@
 #include "src/states/test_tofsensoren.h"
 #include "src/states/state_muurstopper.h"
 #include "src/states/test_stuwmotoren.h"
+#include "src/states/state_antirotatiegyro.h"
 
 
 //States voor de UAV voor code control.
@@ -33,6 +34,7 @@
 #define state_test_tofsensoren 7
 #define state_test_sidemotor 8
 #define state_muurstopper 9
+#define state_antirotatiegyro 10
 
 /*
     TODO:
@@ -111,7 +113,6 @@ void setup() {
 
   initRelays();
   digitalWrite(pinD4, HIGH);
-  digitalWrite(thrusterPin, HIGH);
 
 
   _SDCardWriter.init();
@@ -127,9 +128,12 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_muurstopper); //
+  switchState(state_antirotatiegyro); //
 
   resetWebsiteVariables();
+
+  
+  digitalWrite(thrusterPin, HIGH);
 }
 
 int state = 0;
@@ -142,6 +146,7 @@ void loop() {
   //Always dislay amperage.
   displayAmperage();
 
+  gyro.update();
 
 
   if(systemStopped) {
@@ -188,6 +193,9 @@ void loop() {
     test_stuwmotoren(rechterblower,rechterpwmtranslator,rechterBlowerDriver,linkerblower,linkerpwmtranslator,linkerBlowerDriver);
       
       break;
+    case state_antirotatiegyro:
+      run_state_antirotatieGYRO(linkerblower, rechterblower, gyro);
+      break;
   }
 
 }
@@ -227,7 +235,6 @@ void switchState(int state){
 
     case state_test_sidemotor:
     break;
-
 
   }
 

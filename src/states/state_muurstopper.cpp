@@ -3,10 +3,10 @@
 // === PID-regeling ===
 float berekenAfstandKracht(float afstand) {
     // PID-instellingen
-    static const float setpoint = 20.0;  // gewenste afstand in cm
+    static const float setpoint = 30.0;  // gewenste afstand in cm
     static const float Kp = 0.147;
-    static const float Ki = 0.0;
-    static const float Kd = 0.8;
+    static const float Ki = 0.006;
+    static const float Kd = 0.377;
 
     // Interne PID-variabelen
     static float integral = 0.0;
@@ -31,7 +31,7 @@ float berekenAfstandKracht(float afstand) {
   last_error = error;
 
   float kracht = Kp * error + Ki * integral + Kd * derivative;
-  kracht = constrain(kracht, -0.215, 0.147);
+  kracht = constrain(kracht, -0.15, 0.15);
 
   return kracht;
 }
