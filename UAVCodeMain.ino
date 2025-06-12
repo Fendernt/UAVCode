@@ -128,7 +128,7 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_muurstopper); //
+  switchState(state_antirotatiegyro); //
 
   resetWebsiteVariables();
 
@@ -194,7 +194,7 @@ void loop() {
       
       break;
     case state_antirotatiegyro:
-      run_state_antirotatieGYRO(linkerblower, rechterblower, gyro);
+      run_state_antirotatieGYRO(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver,gyro);
       break;
   }
 

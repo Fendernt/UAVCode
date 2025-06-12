@@ -14,6 +14,6 @@ extern float getYawRate(); // moet elders gedefinieerd worden
 float berekenCorrectiekrachtGyro(float yawRate);
 
 // Uitvoerfunctie voor antidraaien
-void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts, GyroSensor& gyro);
+void run_state_antirotatieGYRO(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,Blower& stuwMotorRechts, PWMTranslator& translatorrechts,BlowerDriver& rechterdriver, GyroSensor& gyro);
 
 #endif

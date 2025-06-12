@@ -42,7 +42,7 @@ float berekenCorrectiekrachtGyro(float yawRate) {
 }
 
 // Aansturing van beide achterventilatoren voor rotatiecontrole
-void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts, GyroSensor& gyro) {
+void run_state_antirotatieGYRO(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,Blower& stuwMotorRechts, PWMTranslator& translatorrechts,BlowerDriver& rechterdriver, GyroSensor& gyro) {
     float yawRate = gyro.getYaw(); // moet extern gedefinieerd zijn
     float kracht = berekenCorrectiekrachtGyro(yawRate);
 
@@ -52,8 +52,8 @@ void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts, 
     float krachtLinksGram  = krachtLinks / gravity;
     float krachtRechtsGram = krachtRechts / gravity;
 
-    //setRearLeftFan(krachtLinksGram);
-    //setRearRightFan(krachtRechtsGram);
+    stuwMotorLinks.leverkracht(krachtLinksGram);
+    stuwMotorRechts.leverkracht(krachtRechtsGram);
 
     // Debug
     Serial.print("[Antirotatie] YawRate: ");
@@ -66,5 +66,8 @@ void run_state_antirotatieGYRO(Blower& stuwMotorLinks, Blower& stuwMotorRechts, 
     Serial.print(krachtRechts, 3);
     Serial.print(" N (");
     Serial.print(krachtRechtsGram, 2);
-    Serial.println(" g)");
+    Serial.print(" g PWMl PWMR)");
+    Serial.print(linkerdriver.drive(translatorlinks.stuwkrachtnaarpwm(krachtLinksGram)));
+    Serial.print(",");
+    Serial.println(rechterdriver.drive(translatorrechts.stuwkrachtnaarpwm(krachtRechtsGram)));
 }
