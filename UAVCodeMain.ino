@@ -200,6 +200,16 @@ void loop() {
 
       //run_state_aruco_afstand(y, linkerblower, rechterblower);
       run_state_aruco_orienteren(x, linkerblower, rechterblower);
+      
+      
+      // //Maybe this'll work? i hope
+      // #define range 1.5
+      // if(range > x > -range){
+      //   run_state_aruco_afstand(y, linkerblower, rechterblower);
+      // } else {
+      //   run_state_aruco_orienteren(x, linkerblower, rechterblower);
+      // }
+        
       break;
     case state_test_tofsensoren:
         test_tofsensoren(tofLachter, tofLvoor, tofVoor);
