@@ -57,7 +57,7 @@ int richting = 0;
       b = b1;
       c = c1;
 
-      richting  = -1; //achteruit = vooruit
+      richting  = 1; //achteruit = vooruit
 
 
     }
@@ -67,7 +67,7 @@ int richting = 0;
     b = b2;
     c = c2;
 
-    richting = 1; //vooruit = achteruit
+    richting = -1; //vooruit = achteruit
     stuwkracht = stuwkracht * -1.0; //stuwkracht moet positief zijn voor de functie om te werken, richting wordt later toegevoegd
   }
 

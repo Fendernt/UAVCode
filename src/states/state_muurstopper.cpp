@@ -31,13 +31,13 @@ float berekenAfstandKracht(float afstand) {
   last_error = error;
 
   float kracht = Kp * error + Ki * integral + Kd * derivative;
-  kracht = constrain(kracht, -0.15, 0.15);
+  kracht = constrain(kracht, -0.20, 0.20);
 
   return kracht;
 }
 
 // === State-afhandeling ===
-void run_state_muur_stopper(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
+void run_state_muur_stopper(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,Blower& stuwMotorRechts, PWMTranslator& translatorrechts,BlowerDriver& rechterdriver) {
   float afstandVoor = tofVoor.getDistance();  // mm
   float afstandCM = afstandVoor / 10.0;  // naar cm
   float kracht = berekenAfstandKracht(afstandCM);
@@ -58,4 +58,7 @@ void run_state_muur_stopper(Blower& stuwMotorLinks, Blower& stuwMotorRechts) {
   Serial.print(kracht, 3);
   Serial.print(" N | Gram: ");
   Serial.println(krachtGram, 2);
+  Serial.print("pwmL, pwmR: ");
+  Serial.print(linkerdriver.drive(translatorlinks.stuwkrachtnaarpwm(krachtGram)));
+  Serial.println(rechterdriver.drive(translatorrechts.stuwkrachtnaarpwm(krachtGram)));
 }

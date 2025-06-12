@@ -13,6 +13,6 @@ void setRearLeftFan(float krachtGram);
 void setRearRightFan(float krachtGram);
 
 // Muurstop-logica, aanroepen in je main loop of state-machine
-void run_state_muur_stopper(Blower& stuwMotorLinks, Blower& stuwMotorRechts);
+void run_state_muur_stopper(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,Blower& stuwMotorRechts, PWMTranslator& translatorrechts,BlowerDriver& rechterdriver);
 
 #endif
