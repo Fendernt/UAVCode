@@ -59,6 +59,8 @@ void SDCardWriter::log(float v1, float v2, float v3, int timer){
 }
 
 void SDCardWriter::finishWriting(){
+    if(currentIndex == 0) return;
+    
     stopLogging = 1;
     writeBufferToFile();
     currentIndex = 0;
