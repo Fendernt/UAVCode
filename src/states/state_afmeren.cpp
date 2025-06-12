@@ -62,7 +62,7 @@ void run_state_afmeren(Blower& sideblower, PWMTranslator& translator,SideBlowerD
   stuwkracht = kracht / 0.00981;
   sideblower.leverkracht(stuwkracht);
 
-  //_SDCardWriter.log(afstandGemiddeld, stuwkracht, kracht,15);
+  _SDCardWriter.log(afstandGemiddeld, stuwkracht, kracht,15);
 
   // Debug info
   Serial.print("[Afmeren] Afstand: ");

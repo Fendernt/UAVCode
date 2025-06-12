@@ -3,6 +3,7 @@
 
 #include "../sensors/TOFSensor.h"
 #include "../blowers/Blower.h"
+#include "../other/Globals.h"
 #include <Arduino.h>
 
 // Enkele TOF-sensor die naar de muur kijkt

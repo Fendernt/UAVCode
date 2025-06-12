@@ -128,7 +128,7 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_antirotatiegyro); //
+  switchState(state_afmeren); //
 
   resetWebsiteVariables();
 
@@ -272,7 +272,7 @@ void initTOFSensors(){
   tofLvoor.setOffset(0);
 
   tofVoor.initAddres(0x32);
-  tofVoor.setOffset(0);
+  tofVoor.setOffset(-90);
 }
 
 /*
