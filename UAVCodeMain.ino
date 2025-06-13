@@ -271,10 +271,10 @@ void initRelays(){
 */
 void initTOFSensors(){
   tofLachter.initAddres(0x30);
-  tofLachter.setOffset(0);
+  tofLachter.setOffset(-10);
 
   tofLvoor.initAddres(0x31);
-  tofLvoor.setOffset(0);
+  tofLvoor.setOffset(-10);
 
   tofVoor.initAddres(0x32);
   tofVoor.setOffset(-90);
