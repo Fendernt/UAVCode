@@ -1,9 +1,10 @@
 #include "state_antirotatiegyro.h"
 
 // PID-waarden voor yaw-stabilisatie (verlaagd)
-const float Kp = 0.08f;
+const float Kp = 0.04f;
 const float Ki = 0.01f;
-const float Kd = 0.01f;
+const float Kd = 0.12f;
+
 
 // Systeeminstellingen
 const float gewensteYaw = 0.0f;      // in rad/s

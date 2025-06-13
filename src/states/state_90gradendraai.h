@@ -1,5 +1,5 @@
-#ifndef STATE_ANTIROTATIEGYRO_H
-#define STATE_ANTIROTATIEGYRO_H
+#ifndef STATE_90GRADENDRAAI_H
+#define STATE_90GRADENDRAAI_H
 
 #include <Arduino.h>
 #include "../blowers/Blower.h"
