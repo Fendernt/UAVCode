@@ -3,7 +3,7 @@
 // === PID-regeling ===
 float berekenAfstandKrachtArUco(float afstand) {
     // PID-instellingen
-    static const float setpoint = 30.0;  // gewenste afstand in cm
+    static const float setpoint = 0.0;  // gewenste afstand in cm
     static const float Kp = 0.147;
     static const float Ki = 0.006;
     static const float Kd = 0.377;
@@ -68,13 +68,12 @@ void run_state_aruco_afstand(float afstandPixels, Blower& stuwMotorLinks ,Blower
 float berekenOrientatieKrachtArUco(float yawRate_rad) {
   // PID-waarden voor yaw-stabilisatie (verlaagd)
   static const float Kp = 0.08f;
-  static const float Ki = 0.01f;
+  static const float Ki = 0.00f;
   static const float Kd = 0.01f;
 
   // Systeeminstellingen
   static const float gewensteYaw = 0.0f;      // in rad/s
   static const float armLength = 0.1f;        // in meter
-  static const float gravity = 9.81f;         // m/s^2
 
   static const float maxForceForward = 0.2f;     // N
   static const float maxForceBackward = -0.2f;   // N
@@ -110,14 +109,15 @@ float berekenOrientatieKrachtArUco(float yawRate_rad) {
 }
 
 void run_state_aruco_orienteren(float xHoek, Blower& stuwMotorLinks ,Blower& stuwMotorRechts) {
-  float kracht = berekenOrientatieKrachtArUco(xHoek);
+  float yawRate_rad = (xHoek*10)  * (3.141 / 180.0f);
+  float kracht = berekenOrientatieKrachtArUco(yawRate_rad);
   float krachtGram = kracht / 0.00981;
 
   // Beide achterventilatoren leveren gelijke kracht
   //setRearLeftFan(krachtGram);
   //setRearRightFan(krachtGram);
   stuwMotorLinks.leverkracht(krachtGram);
-  stuwMotorRechts.leverkracht(krachtGram);
+  stuwMotorRechts.leverkracht(-krachtGram);
 
   // Debug
   Serial.print("[Afstand ArUco] Orientatie: ");
