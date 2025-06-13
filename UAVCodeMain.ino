@@ -135,7 +135,7 @@ void setup() {
   resetWebsiteVariables();
 
   
-  digitalWrite(thrusterPin, HIGH);
+  //digitalWrite(thrusterPin, HIGH);
 }
 
 int state = 0;
@@ -184,6 +184,7 @@ void loop() {
       break;
 
     case state_arucomarker:
+      sideBlowerDriver.drive(0);
       static float x, y;
       if (pimsg != "n") {
         int xIndex = pimsg.indexOf('x');
@@ -242,6 +243,9 @@ void switchState(int state){
         linkerblower.leverkracht(0);
         rechterblower.leverkracht(0);
         sideblower.leverkracht(0);
+      break;
+    case state_draaien:
+        gyro.setYawOffset();
       break;
   }
 
