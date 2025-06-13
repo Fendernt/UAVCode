@@ -1,14 +1,13 @@
 #include "state_90gradendraai.h"
 
 // PID-waarden voor yaw-stabilisatie (verlaagd)
-const float Kp = 0.04f;
+const float Kp = 0.2f;
 const float Ki = 0.01f;
-const float Kd = 0.12f;
+const float Kd = 0.2f;
 
 // Systeeminstellingen
-const float gewensteYaw = 1.571f;      // in rad/s
+const float gewensteYaw = 1.300f;      // in rad/s
 const float armLength = 0.1f;        // in meter
-const float gravity = 9.81f;         // m/s^2
 
 const float maxForceForward = 0.2f;     // N
 const float maxForceBackward = -0.2f;   // N
