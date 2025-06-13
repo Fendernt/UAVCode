@@ -15,14 +15,15 @@ void SDCardWriter::log(float v1, float v2, float v3, int timer){
     if(currentIndex == 0){
         prevMillis = millis();
         maxWriteTime = timer*1000;
+        startingMillis = millis();
     }
 
     
-    long now = millis();
+    unsigned long now = millis();
     if (now - t_lastSample >= samplingInterval) {
         t_lastSample = now;
 
-        buffer[currentIndex].time = now;
+        buffer[currentIndex].time = (now-startingMillis);
         buffer[currentIndex].value1 = v1;
         buffer[currentIndex].value2 = v2;
         buffer[currentIndex].value3 = v3;

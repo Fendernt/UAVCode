@@ -61,4 +61,6 @@ void run_state_muur_stopper(Blower& stuwMotorLinks, PWMTranslator& translatorlin
   Serial.print("pwmL, pwmR: ");
   Serial.print(linkerdriver.drive(translatorlinks.stuwkrachtnaarpwm(krachtGram)));
   Serial.println(rechterdriver.drive(translatorrechts.stuwkrachtnaarpwm(krachtGram)));
+
+  _SDCardWriter.log(afstandCM, kracht, krachtGram, 15);
 }

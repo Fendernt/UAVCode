@@ -36,6 +36,7 @@ class SDCardWriter {
         bool stopLogging;
         long t_lastSample;
 
+        unsigned long startingMillis;
         unsigned long prevMillis;
         int maxWriteTime = 0;
 
