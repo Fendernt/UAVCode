@@ -5,6 +5,7 @@
 #include "../blowers/Blower.h"
 #include "../blowers/PWMTranslator.h"
 #include "../sensors/TOFSensor.h"
+#include "../other/Globals.h"
 
 // Externe ToF-sensoren (bij linkerzijde hovercraft)
 extern TOFSensor tofLvoor;

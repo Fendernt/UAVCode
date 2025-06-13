@@ -24,6 +24,7 @@
 #include "src/states/state_ArUco.h"
 #include "src/states/state_90gradendraai.h"
 #include "src/states/state_antirotatieTOF.h"
+#include "src/states/state_vooruit.h"
 
 //States voor de UAV voor code control.
 #define state_startup 0
@@ -132,12 +133,12 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_afmeren); //
+  switchState(state_vooruit); //
 
   resetWebsiteVariables();
 
   
-  //digitalWrite(thrusterPin, HIGH);
+  digitalWrite(thrusterPin, HIGH);
 }
 
 int state = 0;
@@ -173,7 +174,7 @@ void loop() {
       break;
 
     case state_vooruit:
-
+      run_state_combined_muur_rotatie(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver);
       break;
 
     case state_muurstopper:

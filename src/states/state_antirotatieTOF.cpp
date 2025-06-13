@@ -1,9 +1,9 @@
 #include "state_antirotatieTOF.h"
 
 // PID-waarden voor yaw-hoek stabilisatie
-const float Kp = 1.0f;
-const float Ki = 0.5f;
-const float Kd = 0.1f;
+const float Kp = 0.2f;
+const float Ki = 0.01f;
+const float Kd = 0.2f;
 
 // Systeeminstellingen
 const float gewensteYaw = 0.0f;
