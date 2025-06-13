@@ -23,6 +23,7 @@
 #include "src/states/state_antirotatiegyro.h"
 #include "src/states/state_ArUco.h"
 #include "src/states/state_90gradendraai.h"
+#include "src/states/state_antirotatieTOF.h"
 
 //States voor de UAV voor code control.
 #define state_startup 0
@@ -37,6 +38,7 @@
 #define state_muurstopper 9
 #define state_antirotatiegyro 10
 #define state_90gradendraai 11
+#define state_antirotatieTOF 12
 /*
     TODO:
 
@@ -130,7 +132,7 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_90gradendraai); //
+  switchState(state_afmeren); //
 
   resetWebsiteVariables();
 
@@ -226,7 +228,10 @@ void loop() {
     case state_antirotatiegyro:
       run_state_antirotatieGYRO(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver,gyro);
       break;
-
+    
+    case state_antirotatieTOF:
+      run_state_antirotatieTOF(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver);
+      break;
   }
 
 }
