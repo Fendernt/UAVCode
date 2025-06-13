@@ -37,7 +37,7 @@ float berekenKracht(float afstandGemiddeld) {
   float kracht = Kp * error + Ki * integral + Kd * derivative;
 
   // Beperk kracht zoals in de simulatie
-  kracht = constrain(kracht, -0.044, 0.044);
+  kracht = constrain(kracht, -0.15, 0.15);
 
   return kracht;
 }

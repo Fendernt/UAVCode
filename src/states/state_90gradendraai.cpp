@@ -1,15 +1,13 @@
-#include "state_antirotatiegyro.h"
+#include "state_90gradendraai.h"
 
 // PID-waarden voor yaw-stabilisatie (verlaagd)
-const float Kp = 0.04f;
+const float Kp = 0.2f;
 const float Ki = 0.01f;
-const float Kd = 0.12f;
-
+const float Kd = 0.2f;
 
 // Systeeminstellingen
-const float gewensteYaw = 0.0f;      // in rad/s
+const float gewensteYaw = 1.300f;      // in rad/s
 const float armLength = 0.1f;        // in meter
-const float gravity = 9.81f;         // m/s^2
 
 const float maxForceForward = 0.2f;     // N
 const float maxForceBackward = -0.2f;   // N
@@ -20,7 +18,7 @@ static float yaw_last_error = 0.0f;
 static unsigned long yaw_last_time = 0;
 
 // Bereken corrigerende kracht (in Newton) op basis van yaw-rate (in rad/s)
-float berekenCorrectiekrachtGyro(float yawRate_rad) {
+float berekenCorrectiekrachtdraaien(float yawRate_rad) {
     float error = gewensteYaw - yawRate_rad;
 
     unsigned long now = millis();
@@ -47,14 +45,14 @@ float berekenCorrectiekrachtGyro(float yawRate_rad) {
 }
 
 // Aansturing van beide achterventilatoren voor rotatiecontrole
-void run_state_antirotatieGYRO(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,
+void run_state_draaien(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,
                                Blower& stuwMotorRechts, PWMTranslator& translatorrechts, BlowerDriver& rechterdriver,
                                GyroSensor& gyro) {
     // Gyro geeft graden/s → omrekenen naar rad/s
     float yawRate_deg = gyro.getYaw();  
     float yawRate_rad = yawRate_deg * (PI / 180.0f);
 
-    float kracht = berekenCorrectiekrachtGyro(yawRate_rad);
+    float kracht = berekenCorrectiekrachtdraaien(yawRate_rad);
 
     float krachtLinks  = constrain(+kracht, maxForceBackward, maxForceForward);
     float krachtRechts = constrain(-kracht, maxForceBackward, maxForceForward);
@@ -66,7 +64,7 @@ void run_state_antirotatieGYRO(Blower& stuwMotorLinks, PWMTranslator& translator
     stuwMotorRechts.leverkracht(krachtRechtsGram);
 
     // Debug mag je zelf weer aanzetten indien nodig
-        Serial.print("[Antirotatie] YawRate: ");
+        Serial.print("[draaien] YawRate: ");
     Serial.print(yawRate_deg, 4);
     Serial.print(" graden | Kracht L: ");
     Serial.print(krachtLinks, 3);
@@ -81,6 +79,6 @@ void run_state_antirotatieGYRO(Blower& stuwMotorLinks, PWMTranslator& translator
     Serial.print(", ");
     Serial.println(rechterdriver.drive(translatorrechts.stuwkrachtnaarpwm(krachtRechtsGram)));
 
-    _SDCardWriter.log(yawRate_deg , krachtLinks, krachtRechts, 20);
+    _SDCardWriter.log(yawRate_deg , krachtLinks, krachtRechts,15);
 }
 

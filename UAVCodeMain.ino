@@ -22,6 +22,7 @@
 #include "src/states/test_stuwmotoren.h"
 #include "src/states/state_antirotatiegyro.h"
 #include "src/states/state_ArUco.h"
+#include "src/states/state_90gradendraai.h"
 
 //States voor de UAV voor code control.
 #define state_startup 0
@@ -35,7 +36,7 @@
 #define state_test_sidemotor 8
 #define state_muurstopper 9
 #define state_antirotatiegyro 10
-
+#define state_90gradendraai 11
 /*
     TODO:
 
@@ -129,7 +130,7 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_idle); //
+  switchState(state_90gradendraai); //
 
   resetWebsiteVariables();
 
@@ -177,7 +178,8 @@ void loop() {
         run_state_muur_stopper(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver);
       break;
 
-    case state_draaien:
+    case state_90gradendraai:
+      run_state_draaien(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver,gyro);
 
       break;
 
@@ -225,6 +227,7 @@ void loop() {
     case state_antirotatiegyro:
       run_state_antirotatieGYRO(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver,gyro);
       break;
+
   }
 
 }
@@ -272,10 +275,10 @@ void initRelays(){
 */
 void initTOFSensors(){
   tofLachter.initAddres(0x30);
-  tofLachter.setOffset(0);
+  tofLachter.setOffset(-10);
 
   tofLvoor.initAddres(0x31);
-  tofLvoor.setOffset(0);
+  tofLvoor.setOffset(-10);
 
   tofVoor.initAddres(0x32);
   tofVoor.setOffset(-90);
