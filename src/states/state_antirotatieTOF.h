@@ -15,6 +15,6 @@ float berekenYawHoek(); // berekent hoek in radialen
 float berekenCorrectiekrachtTOF(float hoek);
 
 // Uitvoerfunctie voor antidraaien
-void run_state_antirotatieTOF(Blower& stuwMotorLinks, Blower& stuwMotorRechts);
+void run_state_antirotatieTOF(Blower& stuwMotorLinks, PWMTranslator& translatorlinks, BlowerDriver& linkerdriver,Blower& stuwMotorRechts, PWMTranslator& translatorrechts,BlowerDriver& rechterdriver);
 
 #endif

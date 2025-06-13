@@ -21,7 +21,7 @@
 #include "src/states/state_muurstopper.h"
 #include "src/states/test_stuwmotoren.h"
 #include "src/states/state_antirotatiegyro.h"
-
+#include "src/states/state_ArUco.h"
 
 //States voor de UAV voor code control.
 #define state_startup 0
@@ -67,6 +67,7 @@ const unsigned long displayInterval = 200; // 5 ms per digit
 volatile bool systemStopped = false;
 volatile int UAVState = 0;
 
+String pimsg = "n";
 
 //Seven segment display.
 SevenDigitDisplay sevenDigitDisplay(
@@ -128,7 +129,7 @@ void setup() {
   gyro.init(5); 
 
 
-  switchState(state_afmeren); //
+  switchState(state_idle); //
 
   resetWebsiteVariables();
 
@@ -181,7 +182,34 @@ void loop() {
       break;
 
     case state_arucomarker:
+      static float x, y;
+      if (pimsg != "n") {
+        int xIndex = pimsg.indexOf('x');
+        int yIndex = pimsg.indexOf('y');
 
+        // Extract substrings and convert to float
+        x = pimsg.substring(xIndex + 1, yIndex - 1).toFloat();
+        y = pimsg.substring(yIndex + 1).toFloat();
+
+        
+      }
+      // Serial.print("x = ");
+      // Serial.print(x);
+      // Serial.print(" y = ");
+      // Serial.println(y);
+
+      //run_state_aruco_afstand(y, linkerblower, rechterblower);
+      run_state_aruco_orienteren(x, linkerblower, rechterblower);
+      
+      
+      // //Maybe this'll work? i hope
+      // #define range 1.5
+      // if(range > x > -range){
+      //   run_state_aruco_afstand(y, linkerblower, rechterblower);
+      // } else {
+      //   run_state_aruco_orienteren(x, linkerblower, rechterblower);
+      // }
+        
       break;
     case state_test_tofsensoren:
         test_tofsensoren(tofLachter, tofLvoor, tofVoor);
@@ -207,38 +235,12 @@ void loop() {
 */
 void switchState(int state){
   switch(state){
-    case state_startup:
-        //idk what to do here yet.
-      break;
     case state_idle:
         linkerblower.leverkracht(0);
         rechterblower.leverkracht(0);
         sideblower.leverkracht(0);
       break;
-    case state_afmeren:
-
-      break;
-
-    case state_vooruit:
-
-      break;
-
-    case state_draaien:
-
-      break;
-
-    case state_arucomarker:
-
-      break;
-    case state_test_tofsensoren:
-      break;
-
-    case state_test_sidemotor:
-    break;
-
   }
-
-
 
 
     UAVState = state;
@@ -352,35 +354,52 @@ void displayAmperage(){
 /*
   Check of de website een command heeft gestuurd en switch de state accordingly.
 */
+
+unsigned long prevMillis;
+unsigned long CD = 50;
 void checkPiServerInput(){
+  if(millis() - prevMillis < CD) return;
+  prevMillis = millis();
+  
   if (Serial1.available()) {
     String msg = Serial1.readStringUntil('\n');
-    Serial.print("Pi Message received: ");
+    Serial.print("Pi msg received: ");
+    Serial.println(msg);
 
     if (msg == "1") {
       switchState(state_idle);
       Serial.println("Setstate: Idle");
+      pimsg = "n";
     }
     else if (msg == "2") {
       switchState(state_afmeren);
       Serial.println("Setstate: Afmeren");
+      pimsg = "n";
     }
     else if (msg == "3") {
       switchState(state_vooruit);
       Serial.println("Setstate: Vooruit");
+      pimsg = "n";
     }
     else if (msg == "4") {
       switchState(state_draaien);
       Serial.println("Setstate: Draaien");
+      pimsg = "n";
     }
     else if (msg == "5") {
       switchState(state_arucomarker);
       Serial.println("Setstate: Arucomarker");
+      pimsg = "n";
     }
     else if (msg == "-1") {
       Serial.println("Toggle Thrusters.");
       digitalWrite(thrusterPin, !digitalRead(thrusterPin));
+      pimsg = "n";
     }
+
+    pimsg = msg;
+
+    Serial1.flush();
   }
 }
 
