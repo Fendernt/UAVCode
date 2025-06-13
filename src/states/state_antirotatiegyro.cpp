@@ -80,5 +80,7 @@ void run_state_antirotatieGYRO(Blower& stuwMotorLinks, PWMTranslator& translator
     Serial.print(linkerdriver.drive(translatorlinks.stuwkrachtnaarpwm(krachtLinksGram)));
     Serial.print(", ");
     Serial.println(rechterdriver.drive(translatorrechts.stuwkrachtnaarpwm(krachtRechtsGram)));
+
+    _SDCardWriter.log(yawRate_deg , krachtLinks, krachtRechts, 20);
 }
 

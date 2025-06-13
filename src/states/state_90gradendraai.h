@@ -5,6 +5,7 @@
 #include "../blowers/Blower.h"
 #include "../blowers/PWMTranslator.h"
 #include "../sensors/GyroSensor.h"
+#include "../other/Globals.h"
 
 // Externe afhankelijkheden (zoals gyro en motorfuncties)
 extern float getYawRate(); // moet elders gedefinieerd worden
