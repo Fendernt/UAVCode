@@ -1,14 +1,14 @@
 #include "state_vooruit.h"
 
 // PID-waarden muurstopper
-const float muur_Kp = 0.147f;
+const float muur_Kp = 0.2f;
 const float muur_Ki = 0.006f;
-const float muur_Kd = 0.377f;
+const float muur_Kd = 0.5f;
 
 // PID-waarden antirotatie
-const float rot_Kp = 0.2f;
+const float rot_Kp = 0.1f;
 const float rot_Ki = 0.01f;
-const float rot_Kd = 0.2f;
+const float rot_Kd = 0.1f;
 
 // Setpoints en limieten
 const float gewensteYaw = 0.0f;
@@ -100,8 +100,8 @@ void run_state_combined_muur_rotatie(
     float krachtYaw = berekenYawKrachtvooruit(yaw);
 
     // Combineer krachten per motor
-    float yawInvloedFactor = 0.8f; // experimenteel getal
-    float krachtInvloedFactor = 1.2f; // experimenteel getal
+    float yawInvloedFactor = 1.0f; // experimenteel getal
+    float krachtInvloedFactor = 1.0f; // experimenteel getal
     float krachtLinks  = (krachtAfstand * krachtInvloedFactor + yawInvloedFactor * krachtYaw)/2;
     float krachtRechts = (krachtAfstand * krachtInvloedFactor - yawInvloedFactor * krachtYaw)/2;
 
@@ -118,21 +118,5 @@ void run_state_combined_muur_rotatie(
     stuwMotorLinks.leverkracht(krachtLinksGram);
     stuwMotorRechts.leverkracht(krachtRechtsGram);
 
-    // Debug output
-    Serial.print("[COMBI] Afstand: ");
-    Serial.print(afstandCM, 2);
-    Serial.print(" cm | Yaw: ");
-    Serial.print(yaw, 3);
-    Serial.print(" rad | Kracht L: ");
-    Serial.print(krachtLinks, 3);
-    Serial.print(" N (");
-    Serial.print(krachtLinksGram, 2);
-    Serial.print(" g), R: ");
-    Serial.print(krachtRechts, 3);
-    Serial.print(" N (");
-    Serial.print(krachtRechtsGram, 2);
-    Serial.println(" g)");
-
-    _SDCardWriter.log(afstandCM, yaw, krachtLinks, 20);
 
 }

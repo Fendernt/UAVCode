@@ -175,6 +175,7 @@ void loop() {
 
     case state_vooruit:
       run_state_combined_muur_rotatie(linkerblower,linkerpwmtranslator,linkerBlowerDriver,rechterblower,rechterpwmtranslator,rechterBlowerDriver);
+      run_state_afmeren(sideblower,sideblowerpwmtranslator,sideBlowerDriver);
       break;
 
     case state_muurstopper:
