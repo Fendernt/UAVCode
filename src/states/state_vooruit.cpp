@@ -100,9 +100,10 @@ void run_state_combined_muur_rotatie(
     float krachtYaw = berekenYawKrachtvooruit(yaw);
 
     // Combineer krachten per motor
-    float yawInvloedFactor = 0.6f; // experimenteel getal < 1
-    float krachtLinks  = (krachtAfstand + yawInvloedFactor * krachtYaw)/ 2;
-    float krachtRechts = (krachtAfstand - yawInvloedFactor * krachtYaw)/ 2;
+    float yawInvloedFactor = 0.8f; // experimenteel getal
+    float krachtInvloedFactor = 1.2f; // experimenteel getal
+    float krachtLinks  = (krachtAfstand * krachtInvloedFactor + yawInvloedFactor * krachtYaw)/2;
+    float krachtRechts = (krachtAfstand * krachtInvloedFactor - yawInvloedFactor * krachtYaw)/2;
 
 
     // Beperk motoroutput

@@ -11,13 +11,13 @@ SidePWMTranslator::SidePWMTranslator(float a_voor, float b_voor, float c_voor, f
   b2 = b_achter;
   c2 = c_achter;
   
-  minpwm_vooruit = 20;
+  minpwm_vooruit = 120;
   maxpwm_vooruit = 170;
 
   minkracht_vooruit = pwmnaarstuwkracht(minpwm_vooruit);
   maxkracht_vooruit = pwmnaarstuwkracht(maxpwm_vooruit);
 
-  minpwm_achteruit = -20;
+  minpwm_achteruit = -120;
   maxpwm_achteruit = -170;
   minkracht_achteruit = pwmnaarstuwkracht(minpwm_achteruit);
   maxkracht_achteruit = pwmnaarstuwkracht(maxpwm_achteruit);
